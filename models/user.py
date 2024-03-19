@@ -4,7 +4,10 @@
 
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String
+from sqlalchemy import Column, Integer, String
+from models.review import Review
+from models.place import Place
+from sqlalchemy.ext.declarative import declarative_base
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
@@ -15,5 +18,7 @@ class User(BaseModel, Base):
     password = Column(String(128), nullable=False)
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
-    places = relationship('Place', cascade='delete', backref='user')
-    reviews = relationship('Review', cascade='delete', backref='user')
+    places = relationship('Place', cascade='all, delete, delete-orphan', 
+            backref='user')
+    reviews = relationship('Review', cascade='all, delete, delete-orphan', 
+            backref='user')
